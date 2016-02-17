@@ -30,18 +30,17 @@ public class EmployeeTest {
         employee.setName("test");
         employee.setGender("male");
         employee.setAge(0);
-        int r = employeeService.insert(employee);
-        System.out.print(r);
+        employeeService.insert(employee);
     }
 
     @Test
     public void selectAll(){
-        System.out.print(employeeService.getAllEmployee());
+        employeeService.getAllEmployee();
     }
 
     @Test
     public void selectById(){
-        System.out.print(employeeService.selectById(1));
+        employeeService.selectById(1);
     }
 
     @Test
