@@ -54,12 +54,17 @@
     </select>
     <select id="findRoles" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT r.role
-        FROM role r INNER JOIN user_role ur ON r.id = ur.role_id
-        WHERE ur.user_id = (SELECT id FROM `user` WHERE `name` = #{name,jdbcType=VARCHAR})
+        FROM role r
+        INNER JOIN user_role ur ON r.id = ur.role_id
+        INNER JOIN `user` u ON u.id = ur.user_id
+        WHERE	u.`name` = #{name,jdbcType=VARCHAR}
     </select>
     <select id="findPermissions" parameterType="java.lang.String" resultType="java.lang.String">
-        SELECT p.permission
-        FROM permission p INNER JOIN role_permission rp ON p.id = rp.permission_id
-        WHERE rp.role_id IN (SELECT ur.role_id	FROM user_role ur INNER JOIN `user` u ON ur.user_id = u.id WHERE u.name = #{name,jdbcType=VARCHAR})
+        SELECT	p.permission
+        FROM	permission p
+        INNER JOIN role_permission rp ON p.id = rp.permission_id
+        INNER JOIN user_role ur ON ur.role_id = rp.role_id
+        INNER JOIN `user` u ON u.id = ur.user_id
+        WHERE	u.`name` = #{name,jdbcType=VARCHAR}
     </select>
 </mapper>
