@@ -19,6 +19,10 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.0.6.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:4.0.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.12" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.12" />
+          <element id="library" level="project" name="Maven: cglib:cglib:2.2" />
+          <element id="library" level="project" name="Maven: asm:asm:3.1" />
           <element id="library" level="project" name="Maven: org.springframework:spring-test:4.0.6.RELEASE" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.2.7" />
           <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:1.2.2" />

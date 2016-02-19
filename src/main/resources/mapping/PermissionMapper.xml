@@ -12,7 +12,7 @@
         delete from permission
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="createPermission" parameterType="com.wind.springdemo.model.User">
+    <insert id="createPermission" parameterType="com.wind.springdemo.model.Permission">
         insert into permission (id, permission, description,
         available)
         values (#{id,jdbcType=INTEGER}, #{permission,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},

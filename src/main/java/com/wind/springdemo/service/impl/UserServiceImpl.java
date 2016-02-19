@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Created by pc on 2016/2/17.
  */
-@Service("userService")
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -38,18 +38,18 @@ public class UserServiceImpl implements UserService {
         return userDao.getAllEmployee();
     }
 
-    public void correlationRoles(Long userId, Long... roleIds) {
-        userDao.correlationRoles(userId, roleIds);
+    public void correlationRoles(Integer userId, Integer roleId) {
+        userDao.correlationRoles(userId, roleId);
     }
 
     /**
      * 移除用户-角色关系
      *
      * @param userId
-     * @param roleIds
+     * @param roleId
      */
-    public void uncorrelationRoles(Long userId, Long... roleIds) {
-        userDao.uncorrelationRoles(userId, roleIds);
+    public void uncorrelationRoles(Integer userId, Integer roleId) {
+        userDao.uncorrelationRoles(userId, roleId);
     }
 
     /**

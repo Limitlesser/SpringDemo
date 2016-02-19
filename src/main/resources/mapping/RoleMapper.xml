@@ -12,10 +12,18 @@
         delete from role
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="createRole" parameterType="com.wind.springdemo.model.User">
+    <insert id="createRole" parameterType="com.wind.springdemo.model.Role">
         insert into role (id, role, description,
         available)
-        values (#{id,jdbcType=INTEGER}, #{permission,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+        values (#{id,jdbcType=INTEGER}, #{role,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
         #{available,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="correlationPermission">
+        INSERT INTO role_permission(role_id,permission_id) VALUES (#{role_id},#{permission_id})
+    </insert>
+
+    <insert id="uncorrelationPermission">
+        DELETE FROM role_permission WHERE role_id = #{role_id} AND permission_id = #{permission_id}
     </insert>
 </mapper>

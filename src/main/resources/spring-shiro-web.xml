@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- 缓存管理器 使用Ehcache实现 -->
     <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
@@ -24,9 +24,9 @@
         <property name="authenticationQuery"
                   value="SELECT password FROM user WHERE name = ?"/>
         <property name="userRolesQuery"
-                  value="SELECT role FROM role WHERE id IN (SELECT roleId FROM user_role WHERE userId = (SELECT id FROM user WHERE name = ?))"/>
+                  value="SELECT r.role FROM role r INNER JOIN user_role ur ON r.id = ur.role_id WHERE ur.user_id = (SELECT id FROM `user` WHERE `name` = ?)"/>
         <property name="permissionsQuery"
-                  value="SELECT permission FROM permission WHERE id IN (SELECT permissionId FROM role_permission WHERE roleId IN (SELECT roleId FROM user_role WHERE userId = (SELECT id FROM user WHERE name = ?)))"/>
+                  value="SELECT permission FROM permission WHERE id IN (SELECT permission_id FROM role_permission WHERE role_id IN (SELECT role_id FROM user_role WHERE user_id = (SELECT id FROM user WHERE name = ?)))"/>
     </bean>
 
     <!-- 会话ID生成器 -->
@@ -85,8 +85,8 @@
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login.jsp"/>
-        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+        <property name="loginUrl" value="login.jsp"/>
+        <property name="unauthorizedUrl" value="unauthorized.jsp"/>
         <property name="filters">
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
@@ -94,24 +94,13 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /index.jsp = authc
-                /unauthorized.jsp = anon
-                /login.jsp = authc
+                /pages/index.jsp = authc
+                /pages/addEmployee.jsp = roles[boss]
+                /pages/unauthorized.jsp = anon
                 /logout = logout
             </value>
         </property>
     </bean>
-
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
-
-    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-          depends-on="lifecycleBeanPostProcessor">
-        <property name="proxyTargetClass" value="true"/>
-    </bean>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
-    </bean>
-
 
     <!-- Shiro生命周期处理器-->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>

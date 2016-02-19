@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String path = request.getContextPath();
@@ -12,7 +12,16 @@
 </head>
 <body>
 <h3>Employee List</h3>
-<p><a href="<%=path %>/addEmployeeUI">Add Employee</a></p>
+<%
+    if (request.getSession().getAttribute("user") != null) {
+        Object name = request.getSession().getAttribute("user");
+        Object role = request.getSession().getAttribute("role");
+%>
+<p> welcome: <%=name %> role: <%=role%>   <a href="<%=path%>/logout">logout</a>
+</p>
+<% } %>
+
+<p><a href="<%=path %>/pages/addEmployee.jsp">Add Employee</a></p>
 <table border="1" width="70%">
     <tr>
         <td>Id</td>

@@ -8,6 +8,7 @@ public class RolePermission implements Serializable {
     private Long roleId;
     private Long permissionId;
 
+
     public Long getRoleId() {
         return roleId;
     }

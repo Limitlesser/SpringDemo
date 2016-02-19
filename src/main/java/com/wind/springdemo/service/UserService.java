@@ -23,17 +23,17 @@ public interface UserService {
     /**
      * 添加用户-角色关系
      * @param userId
-     * @param roleIds
+     * @param roleId
      */
-    public void correlationRoles(Long userId, Long... roleIds);
+    public void correlationRoles(Integer userId, Integer roleId);
 
 
     /**
      * 移除用户-角色关系
      * @param userId
-     * @param roleIds
+     * @param roleId
      */
-    public void uncorrelationRoles(Long userId, Long... roleIds);
+    public void uncorrelationRoles(Integer userId, Integer roleId);
 
     /**
      * 根据用户名查找其角色

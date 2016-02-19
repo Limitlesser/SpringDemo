@@ -3,7 +3,7 @@ package com.wind.springdemo.model;
 import java.io.Serializable;
 
 public class Permission implements Serializable {
-    private Long id;
+    private Integer id;
     private String permission; //权限标识 程序中判断使用,如"user:create"
     private String description; //权限描述,UI界面显示使用
     private Boolean available = Boolean.FALSE; //是否可用,如果不可用将不会添加给用户
@@ -11,17 +11,18 @@ public class Permission implements Serializable {
     public Permission() {
     }
 
-    public Permission(String permission, String description, Boolean available) {
+    public Permission(Integer id, String permission, String description, Boolean available) {
+        this.id = id;
         this.permission = permission;
         this.description = description;
         this.available = available;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

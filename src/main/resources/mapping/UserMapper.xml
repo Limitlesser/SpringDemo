@@ -11,8 +11,7 @@
         id, name, password, gender, age
     </sql>
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
+        select *
         from user
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -20,7 +19,7 @@
         delete from user
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.wind.springdemo.model.User">
+    <insert id="insert" parameterType="com.wind.springdemo.model.User" useGeneratedKeys="true" keyProperty="id">
         insert into user (id, name,password, gender,
         age)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
@@ -40,12 +39,27 @@
         from user
     </select>
 
+    <insert id="correlationRoles">
+        INSERT INTO user_role(user_id,role_id) VALUES (#{user_id},#{role_id})
+    </insert>
+
+    <insert id="uncorrelationRoles">
+        DELETE FROM user_role WHERE user_id = #{user_id} AND role_id = #{role_id}
+    </insert>
+
     <select id="findByUsername" resultMap="BaseResultMap">
         SELECT *
         FROM user
         WHERE name = #{name,jdbcType=VARCHAR}
     </select>
     <select id="findRoles" parameterType="java.lang.String" resultType="java.lang.String">
-        SELECT role FROM user_role WHERE name = #{name,jdbcType=VARCHAR}
+        SELECT r.role
+        FROM role r INNER JOIN user_role ur ON r.id = ur.role_id
+        WHERE ur.user_id = (SELECT id FROM `user` WHERE `name` = #{name,jdbcType=VARCHAR})
+    </select>
+    <select id="findPermissions" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT p.permission
+        FROM permission p INNER JOIN role_permission rp ON p.id = rp.permission_id
+        WHERE rp.role_id IN (SELECT ur.role_id	FROM user_role ur INNER JOIN `user` u ON ur.user_id = u.id WHERE u.name = #{name,jdbcType=VARCHAR})
     </select>
 </mapper>

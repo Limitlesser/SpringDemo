@@ -5,21 +5,24 @@ import com.wind.springdemo.model.Role;
 public interface RoleService {
 
 
-    public Role createRole(Role role);
-    public void deleteRole(Long roleId);
+    void createRole(Role role);
+
+    void deleteRole(Integer roleId);
 
     /**
      * 添加角色-权限之间关系
+     *
      * @param roleId
-     * @param permissionIds
+     * @param permissionId
      */
-    public void correlationPermissions(Long roleId, Long... permissionIds);
+    void correlationPermissions(Integer roleId, Integer permissionId);
 
     /**
      * 移除角色-权限之间关系
+     *
      * @param roleId
-     * @param permissionIds
+     * @param permissionId
      */
-    public void uncorrelationPermissions(Long roleId, Long... permissionIds);
+    void uncorrelationPermissions(Integer roleId, Integer permissionId);
 
 }

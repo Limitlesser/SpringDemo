@@ -20,30 +20,30 @@ public class RoleServiceImpl implements RoleService {
         this.roleDao = roleDao;
     }
 
-    public Role createRole(Role role) {
-        return roleDao.createRole(role);
+    public void createRole(Role role) {
+         roleDao.createRole(role);
     }
 
-    public void deleteRole(Long roleId) {
+    public void deleteRole(Integer roleId) {
         roleDao.deleteRole(roleId);
     }
 
     /**
      * 添加角色-权限之间关系
      * @param roleId
-     * @param permissionIds
+     * @param permissionId
      */
-    public void correlationPermissions(Long roleId, Long... permissionIds) {
-        roleDao.correlationPermissions(roleId, permissionIds);
+    public void correlationPermissions(Integer roleId, Integer permissionId) {
+        roleDao.correlationPermission(roleId, permissionId);
     }
 
     /**
      * 移除角色-权限之间关系
      * @param roleId
-     * @param permissionIds
+     * @param permissionId
      */
-    public void uncorrelationPermissions(Long roleId, Long... permissionIds) {
-        roleDao.uncorrelationPermissions(roleId, permissionIds);
+    public void uncorrelationPermissions(Integer roleId, Integer permissionId) {
+        roleDao.uncorrelationPermission(roleId, permissionId);
     }
 
 }

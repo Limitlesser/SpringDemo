@@ -16,8 +16,8 @@ public class PermissionServiceImpl implements PermissionService {
         this.permissionDao = permissionDao;
     }
 
-    public Permission createPermission(Permission permission) {
-        return permissionDao.createPermission(permission);
+    public void createPermission(Permission permission) {
+        permissionDao.createPermission(permission);
     }
 
     public void deletePermission(Integer permissionId) {

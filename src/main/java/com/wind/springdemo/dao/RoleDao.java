@@ -1,16 +1,18 @@
 package com.wind.springdemo.dao;
 
 import com.wind.springdemo.model.Role;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public interface RoleDao {
 
-    Role createRole(Role role);
+    void createRole(Role role);
 
-    void deleteRole(Long roleId);
+    void deleteRole(Integer roleId);
 
-    void correlationPermissions(Long roleId, Long... permissionIds);
+    void correlationPermission(@Param(value = "role_id") Integer roleId, @Param(value = "permission_id")Integer permissionId);
 
-    void uncorrelationPermissions(Long roleId, Long... permissionIds);
+    void uncorrelationPermission(@Param(value = "role_id")Integer roleId, @Param(value = "permission_id")Integer permissionId);
 
 }
