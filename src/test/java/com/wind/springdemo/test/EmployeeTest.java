@@ -1,7 +1,7 @@
 package com.wind.springdemo.test;
 
-import com.wind.springdemo.model.Employee;
-import com.wind.springdemo.service.IEmployeeService;
+import com.wind.springdemo.model.User;
+import com.wind.springdemo.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class EmployeeTest {
 
     @Autowired
-    private IEmployeeService employeeService;
+    private UserService userService;
 
     @Before
     public void setUp() {
@@ -25,33 +25,33 @@ public class EmployeeTest {
 
     @Test
     public void insert() {
-        Employee employee = new Employee();
-        employee.setName("test");
-        employee.setGender("male");
-        employee.setAge(0);
-        employeeService.insert(employee);
+        User user = new User();
+        user.setName("test");
+        user.setGender("male");
+        user.setAge(0);
+        userService.insert(user);
     }
 
     @Test
     public void selectAll(){
-        employeeService.getAllEmployee();
+        userService.getAllEmployee();
     }
 
     @Test
     public void selectById(){
-        employeeService.selectById(1);
+        userService.selectById(1);
     }
 
     @Test
     public void update(){
-        Employee employee = employeeService.selectById(1);
-        employee.setName("windddd");
-        employeeService.updateById(employee);
+        User user = userService.selectById(1);
+        user.setName("windddd");
+        userService.updateById(user);
     }
 
     @Test
     public void delete(){
-        employeeService.deleteById(1);
+        userService.deleteById(1);
     }
 
 }

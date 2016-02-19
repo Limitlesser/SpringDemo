@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wind.springdemo.dao.RoleDao">
+    <resultMap id="BaseResultMap" type="com.wind.springdemo.model.Role">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="role" property="permission" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="available" property="available" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <delete id="deleteRole" parameterType="java.lang.Integer">
+        delete from role
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="createRole" parameterType="com.wind.springdemo.model.User">
+        insert into role (id, role, description,
+        available)
+        values (#{id,jdbcType=INTEGER}, #{permission,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+        #{available,jdbcType=INTEGER})
+    </insert>
+</mapper>

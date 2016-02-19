@@ -3,10 +3,11 @@ package com.wind.springdemo.model;
 /**
  * Created by pc on 2016/2/16.
  */
-public class Employee {
+public class User {
 
     private Integer id;
     private String name;
+    private String password;
     private String gender;
     private Integer age;
 
@@ -42,9 +43,17 @@ public class Employee {
         this.age = age;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
-        return "Employee{" +
+        return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", gender='" + gender + '\'' +

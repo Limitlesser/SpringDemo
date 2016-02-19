@@ -16,6 +16,10 @@ String path = request.getContextPath();
 					<td><input type="text" name="name"></td>
 				</tr>
 				<tr>
+					<td>password:</td>
+					<td><input type="password" name="password"></td>
+				</tr>
+				<tr>
 					<td>gender:</td>
 					<td><input type="text" name="gender"></td>
 				</tr>

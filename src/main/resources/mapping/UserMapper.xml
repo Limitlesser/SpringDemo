@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wind.springdemo.dao.IEmployeeDao">
-    <resultMap id="BaseResultMap" type="com.wind.springdemo.model.Employee">
+<mapper namespace="com.wind.springdemo.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.wind.springdemo.model.User">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="gender" property="gender" jdbcType="VARCHAR"/>
         <result column="age" property="age" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, name, gender, age
+        id, name, password, gender, age
     </sql>
     <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
-        from employee
+        from user
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteById" parameterType="java.lang.Integer">
-        delete from employee
+        delete from user
         where id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.wind.springdemo.model.Employee">
-        insert into employee (id, name, gender,
+    <insert id="insert" parameterType="com.wind.springdemo.model.User">
+        insert into user (id, name,password, gender,
         age)
-        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
         #{age,jdbcType=INTEGER})
     </insert>
-    <update id="updateById" parameterType="com.wind.springdemo.model.Employee">
-        update employee
+    <update id="updateById" parameterType="com.wind.springdemo.model.User">
+        update user
         set name = #{name,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR}
         gender = #{gender,jdbcType=VARCHAR},
         age = #{age,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
@@ -36,6 +37,15 @@
     <select id="getAllEmployee" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from employee
+        from user
+    </select>
+
+    <select id="findByUsername" resultMap="BaseResultMap">
+        SELECT *
+        FROM user
+        WHERE name = #{name,jdbcType=VARCHAR}
+    </select>
+    <select id="findRoles" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT role FROM user_role WHERE name = #{name,jdbcType=VARCHAR}
     </select>
 </mapper>
