@@ -14,12 +14,29 @@
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
     <!--本示例采用DBCP连接池。 连接池配置如下 -->
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+    <bean id="master" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="${jdbc_driverClassName}"/>
         <property name="url" value="${jdbc_url}"/>
         <property name="username" value="${jdbc_username}"/>
         <property name="password" value="${jdbc_password}"/>
     </bean>
+
+    <bean id="slave" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="${jdbc_driverClassName}"/>
+        <property name="url" value="${jdbc_slave_url}"/>
+        <property name="username" value="${jdbc_username}"/>
+        <property name="password" value="${jdbc_password}"/>
+    </bean>
+
+    <bean id="dataSource" class="com.wind.springdemo.datasource.DynamicDataSource">
+        <property name="master" ref="master"/>
+        <property name="slaves">
+            <list>
+                <ref bean="slave"/>
+            </list>
+        </property>
+    </bean>
+
 
     <!-- mybatis文件配置，扫描所有mapper文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
@@ -31,9 +48,47 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
           p:basePackage="com.wind.springdemo.dao" p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
 
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="dynamicSqlSessionTemplate" class="com.wind.springdemo.datasource.DynamicSqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionTemplate"/>
+    </bean>
+
+    <bean id="transactionManager"
+          class="com.wind.springdemo.datasource.DynamicDataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
     <!-- 对数据源进行事务管理 -->
-    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          p:dataSource-ref="dataSource"/>
-    <tx:annotation-driven mode="proxy" transaction-manager="transactionManager"/>
+    <!--<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"-->
+    <!--p:dataSource-ref="dataSource"/>-->
+
+    <!-- 以 @Transactional 标注来定义事务  -->
+    <tx:annotation-driven transaction-manager="transactionManager"
+                          proxy-target-class="true"/>
+
+    <!-- 配置事务的传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="insert*" propagation="REQUIRED" read-only="false"
+                       rollback-for="Exception"/>
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false"
+                       rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" read-only="false"
+                       rollback-for="Exception"/>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="*" read-only="false"/>
+            <!-- <tx:method name="*" read-only="true" /> -->
+        </tx:attributes>
+    </tx:advice>
+    <!-- 那些类的哪些方法参与事务 -->
+    <aop:config>
+        <aop:pointcut id="allManagerMethod" expression="execution(* mapping..*(..))"/>
+        <aop:advisor pointcut-ref="allManagerMethod" advice-ref="txAdvice"/>
+    </aop:config>
 
 </beans>

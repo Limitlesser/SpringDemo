@@ -18,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ public class MainController {
     @RequestMapping(value = "/login")
     public String login(String name, String password, Model model) {
         String msg;
-        UsernamePasswordToken token = new UsernamePasswordToken(name, new String(password.getBytes(), Charset.defaultCharset()));
+        UsernamePasswordToken token = new UsernamePasswordToken(name, password);
         token.setRememberMe(true);
         Subject subject = SecurityUtils.getSubject();
         try {

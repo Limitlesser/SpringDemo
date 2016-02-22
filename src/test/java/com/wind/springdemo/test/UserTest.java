@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,12 +36,14 @@ public class UserTest {
 
     @Test
     public void selectAll() {
-        userService.getAllEmployee();
+        List<User> users = userService.getAllEmployee();
+        System.out.print(users);
     }
 
     @Test
     public void selectById() {
-        userService.selectById(1);
+        User user = userService.selectById(1);
+        System.out.print(user);
     }
 
     @Test
