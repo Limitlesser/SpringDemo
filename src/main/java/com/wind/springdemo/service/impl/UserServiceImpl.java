@@ -4,6 +4,9 @@ import com.wind.springdemo.dao.UserDao;
 import com.wind.springdemo.model.User;
 import com.wind.springdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @CacheEvict(value = "user", key = "#id")
     public int deleteById(Integer id) {
         return userDao.deleteById(id);
     }
@@ -26,14 +30,15 @@ public class UserServiceImpl implements UserService {
         return userDao.insert(record);
     }
 
+    @Cacheable(value = "user", key = "#id")
     public User selectById(Integer id) {
         return userDao.selectById(id);
     }
 
+    @CachePut(value = "user", key = "#record.id")
     public int updateById(User record) {
         return userDao.updateById(record);
     }
-
 
     public List<User> getAllEmployee() {
         return userDao.getAllEmployee();
@@ -59,6 +64,7 @@ public class UserServiceImpl implements UserService {
      * @param username
      * @return
      */
+    @Cacheable(value = "user", key = "#username")
     public User findByUsername(String username) {
         return userDao.findByUsername(username);
     }

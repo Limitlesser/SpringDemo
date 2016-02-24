@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-    http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-3.2.xsd
-    http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/cache
+        http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <!-- 引入jdbc配置文件 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
@@ -30,44 +36,44 @@
     </bean>
 
     <!--<bean id="dataSource" class="com.wind.springdemo.datasource.ChooseDataSource">-->
-        <!--<property name="targetDataSources">-->
-            <!--<map key-type="java.lang.String">-->
-                <!--&lt;!&ndash; write &ndash;&gt;-->
-                <!--<entry key="write" value-ref="master"/>-->
-                <!--&lt;!&ndash; read &ndash;&gt;-->
-                <!--<entry key="read" value-ref="slave"/>-->
-            <!--</map>-->
+    <!--<property name="targetDataSources">-->
+    <!--<map key-type="java.lang.String">-->
+    <!--&lt;!&ndash; write &ndash;&gt;-->
+    <!--<entry key="write" value-ref="master"/>-->
+    <!--&lt;!&ndash; read &ndash;&gt;-->
+    <!--<entry key="read" value-ref="slave"/>-->
+    <!--</map>-->
 
-        <!--</property>-->
-        <!--<property name="defaultTargetDataSource" ref="master"/>-->
+    <!--</property>-->
+    <!--<property name="defaultTargetDataSource" ref="master"/>-->
     <!--</bean>-->
 
     <bean id="dataSource" class="com.wind.springdemo.datasource.DynamicDataSource">
-        <property name="master" ref="master" />
+        <property name="master" ref="master"/>
         <property name="slaves">
             <list>
-                <ref bean="slave"/>
+                <ref bean="master"/>
             </list>
         </property>
     </bean>
 
-    <context:annotation-config />
+    <context:annotation-config/>
 
     <!--enale component scanning (beware that this does not enable mapper scanning!)-->
-    <context:component-scan base-package="com.wind.springdemo.aspect" />
+    <context:component-scan base-package="com.wind.springdemo.aspect"/>
     <context:component-scan base-package="com.wind.springdemo.service">
         <context:include-filter type="annotation"
-                                expression="org.springframework.stereotype.Component" />
+                                expression="org.springframework.stereotype.Component"/>
     </context:component-scan>
 
 
     <!-- enable transaction demarcation with annotations -->
-    <tx:annotation-driven />
+    <tx:annotation-driven/>
 
     <!-- mybatis文件配置，扫描所有mapper文件 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="dataSource"
-          p:mapperLocations="classpath*:com/wind/springdemo/dao/*.xml"/>
+          p:mapperLocations="classpath*:mapping/*.xml"/>
     <!-- configLocation为mybatis属性	mapperLocations为所有mapper -->
 
     <!-- spring与mybatis整合配置，扫描所有dao ,生成与DAO类相同名字的bean（除了首字母小写）-->
@@ -79,7 +85,7 @@
     </bean>
 
     <bean id="dynamicSqlSessionTemplate" class="com.wind.springdemo.datasource.DynamicSqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionTemplate" />
+        <constructor-arg index="0" ref="sqlSessionTemplate"/>
     </bean>
 
 
@@ -90,11 +96,11 @@
     <!-- 定义单个jdbc数据源的事务管理器 -->
     <bean id="transactionManager"
           class="com.wind.springdemo.datasource.DynamicDataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource"/>
     </bean>
     <!-- 以 @Transactional 标注来定义事务  -->
     <tx:annotation-driven transaction-manager="transactionManager"
-                          proxy-target-class="true" />
+                          proxy-target-class="true"/>
 
     <!-- 激活自动代理功能 -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
@@ -103,17 +109,17 @@
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="insert*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception" />
+                       rollback-for="Exception"/>
             <tx:method name="delete*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception" />
+                       rollback-for="Exception"/>
             <tx:method name="update*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception" />
+                       rollback-for="Exception"/>
             <tx:method name="proc*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception" />
-            <tx:method name="select*" read-only="true" />
-            <tx:method name="get*" read-only="true" />
-            <tx:method name="find*" read-only="true" />
-            <tx:method name="*" read-only="false" />
+                       rollback-for="Exception"/>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="*" read-only="false"/>
             <!-- <tx:method name="*" read-only="true" /> -->
         </tx:attributes>
     </tx:advice>
@@ -124,16 +130,16 @@
     </aop:config>
 
 
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager">
-
-            <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-                <property name="configLocation" value="classpath:ehcache-config.xml"/>
-            </bean>
-        </property>
+    <bean id="ehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:ehcache-config.xml"/>
     </bean>
 
-    <cache:annotation-driven />
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="ehcacheManager"/>
+        <property name="transactionAware" value="true"/>
+    </bean>
+
+    <cache:annotation-driven cache-manager="cacheManager" proxy-target-class="true"/>
 
 
 </beans>

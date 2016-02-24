@@ -16,19 +16,19 @@ import java.util.Set;
 @Repository
 public interface UserDao {
 
-    @CacheEvict(value = "user",key = "#id")
+
     int deleteById(Integer id);
 
-    @CachePut(value = "user",key = "#record.id")
+
     int insert(User record);
 
-    @Cacheable(value = "user",key = "#id")
+
     User selectById(Integer id);
 
-    @CachePut(value = "user",key = "#record.id")
+
     int updateById(User record);
 
-    @Cacheable(value = "user", key = "users")
+
     List<User> getAllEmployee();
 
     void correlationRoles(@Param(value = "user_id") Integer userId, @Param(value = "role_id") Integer roleId);
@@ -36,7 +36,6 @@ public interface UserDao {
     void uncorrelationRoles(@Param(value = "user_id") Integer userId, @Param(value = "role_id") Integer roleId);
 
 
-    @Cacheable(value = "user",key = "#username")
     User findByUsername(String username);
 
     Set<String> findRoles(String username);

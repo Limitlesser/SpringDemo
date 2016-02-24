@@ -77,14 +77,12 @@ public class MainController {
 
     @RequestMapping(value = "/addEmployee")
     @RequiresRoles("boss")
-    @Transactional
     public String addEmployee(User user) {
         userService.insert(user);
         userService.correlationRoles(user.getId(), 2);
         return "redirect:/users";
     }
 
-    @Transactional
     @RequestMapping(value = "/deleteEmployee")
     @RequiresRoles("boss")
     public String deleteEmployee(Integer id) {
