@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
         return userDao.updateById(record);
     }
 
+
     public List<User> getAllEmployee() {
         return userDao.getAllEmployee();
     }

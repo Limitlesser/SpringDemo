@@ -49,7 +49,7 @@
     </filter>
 
     <!-- Make sure any request you want accessible to Shiro is filtered. /* catches all -->
-    <!-- requests.  Usually this filter mapping is defined first (before all others) to -->
+    <!-- requests.  Usually this filter com.wind.springdemo.dao is defined first (before all others) to -->
     <!-- ensure that Shiro works in subsequent filters in the filter chain:             -->
     <filter-mapping>
         <filter-name>shiroFilter</filter-name>

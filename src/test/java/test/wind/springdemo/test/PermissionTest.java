@@ -1,4 +1,4 @@
-package com.wind.springdemo.test;
+package test.wind.springdemo.test;
 
 import com.wind.springdemo.model.Permission;
 import com.wind.springdemo.service.PermissionService;

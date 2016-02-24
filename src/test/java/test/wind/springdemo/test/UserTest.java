@@ -1,4 +1,4 @@
-package com.wind.springdemo.test;
+package test.wind.springdemo.test;
 
 import com.wind.springdemo.model.User;
 import com.wind.springdemo.service.UserService;
@@ -42,7 +42,7 @@ public class UserTest {
 
     @Test
     public void selectById() {
-        User user = userService.selectById(1);
+        User user = userService.selectById(14);
         System.out.print(user);
     }
 
@@ -54,7 +54,7 @@ public class UserTest {
 
     @Test
     public void update() {
-        User user = userService.selectById(1);
+        User user = userService.selectById(14);
         user.setName("windddd");
         userService.updateById(user);
     }
@@ -83,7 +83,7 @@ public class UserTest {
 
     @Test
     public void delete() {
-        userService.deleteById(1);
+        userService.deleteById(12);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.wind.springdemo.service;
 
+import com.wind.springdemo.annotion.DataSource;
 import com.wind.springdemo.model.User;
 
 import java.util.List;
@@ -14,10 +15,12 @@ public interface UserService {
 
     int insert(User record);
 
+    @DataSource(value = "read")
     User selectById(Integer id);
 
     int updateById(User record);
 
+    @DataSource(value = "read")
     List<User> getAllEmployee();
 
     /**
@@ -48,6 +51,7 @@ public interface UserService {
      * @return
      */
     public Set<String> findPermissions(String username);
+
 
     User findByUsername(String username);
 }
