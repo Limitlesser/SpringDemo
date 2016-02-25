@@ -28,7 +28,7 @@
     <update id="updateById" parameterType="com.wind.springdemo.model.User">
         update user
         set name = #{name,jdbcType=VARCHAR},
-        password = #{password,jdbcType=VARCHAR}
+        password = #{password,jdbcType=VARCHAR},
         gender = #{gender,jdbcType=VARCHAR},
         age = #{age,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
