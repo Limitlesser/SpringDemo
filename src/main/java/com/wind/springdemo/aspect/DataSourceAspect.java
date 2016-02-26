@@ -14,7 +14,6 @@ import java.lang.reflect.Method;
 
 //@Aspect
 //@Component
-//@Order
 public class DataSourceAspect {
     @Pointcut("execution(* com.wind.springdemo.service..*.*(..))")
     public void pointCut(){};

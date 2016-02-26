@@ -10,8 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 动态数据源
  *
- * @author 唐延波
- * @date 2015-6-17
  */
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
