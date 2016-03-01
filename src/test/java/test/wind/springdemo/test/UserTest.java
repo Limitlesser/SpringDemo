@@ -1,13 +1,24 @@
 package test.wind.springdemo.test;
 
+import com.wind.springdemo.dao.UserDao;
 import com.wind.springdemo.model.User;
 import com.wind.springdemo.service.UserService;
+import com.wind.springdemo.utils.AopTargetUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Set;
@@ -22,16 +33,28 @@ public class UserTest {
     @Autowired
     private UserService userService;
 
+    @Mock
+    private UserDao mockUserDao;
+
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(AopTargetUtils.getTarget(userService), "userDao", mockUserDao);
     }
 
 
     @Test
     public void insert() {
-        User user = new User("test", "test", "male", 0);
+        final User user = new User("test", "test", "male", 0);
+        when(mockUserDao.insert(user)).then(new Answer<Integer>() {
+            public Integer answer(InvocationOnMock invocationOnMock) throws Throwable {
+                user.setId(12);
+                return 1;
+            }
+        });
         userService.insert(user);
-        System.out.print(user.getId());
+        verify(mockUserDao).insert(user);
+        assertEquals(12, user.getId().intValue());
     }
 
     @Test
